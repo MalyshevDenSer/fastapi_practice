@@ -1,42 +1,33 @@
-# from fastapi import Request, FastAPI
-#
-# app = FastAPI()
-#
-#
-# @app.post('/sign_up')
-# def sign_up(info):
-#     req_info = info.json()
-#     print(req_info)
-#
-# # @app.post('/unify_phone_from_json')
-# # async def unify_phone_from_json(info: Request):
-# #     req_info = await info.json()
-# #     print(req_info)
-
 from typing import Union
 
 from fastapi import FastAPI, Request, Query
 from pydantic import BaseModel
-from pprint import pprint
 
 
-class Item(BaseModel):
+class UserData(BaseModel):
     name: str
-    description: Union[str, None] = None
-    price: float
-    tax: Union[float, None] = None
+    surname: str
+    detailed_occupation: Union[str, None]
+    password: str
 
 
 app = FastAPI()
 
+users_bd = {}
+
 
 @app.post("/sign_up")
-async def create_item(item: Request):
-    pprint(item)
-    return item
+def create_item(data: UserData):
+    user_id = max(users_bd, default=0) + 1
+    users_bd[user_id] = {
+        'name': data.name,
+        'surname': data.surname,
+        'detailed_occupation': data.detailed_occupation,
+        'password': data.password
+    }
+    return 'Success'
 
-#
-# {"detail": [{"loc": ["query", "item"], "msg": "field required", "type": "value_error.missing"}]} %
 
-# {"detail": [{"loc": ["body", "name"], "msg": "field required", "type": "value_error.missing"},
-#             {"loc": ["body", "price"], "msg": "field required", "type": "value_error.missing"}]} %
+@app.get("/give_all_bd")
+def give_all_bd():
+    return users_bd
