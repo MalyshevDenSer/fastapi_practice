@@ -17,7 +17,7 @@ users_bd = {}
 
 
 @app.post("/sign_up")
-def create_item(data: UserData):
+def create_item(data: UserData, test_param: bool = True):
     user_id = max(users_bd, default=0) + 1
     users_bd[user_id] = {
         'name': data.name,
@@ -25,7 +25,7 @@ def create_item(data: UserData):
         'detailed_occupation': data.detailed_occupation,
         'password': data.password
     }
-    return 'Success'
+    return test_param
 
 
 @app.get("/give_all_bd")
