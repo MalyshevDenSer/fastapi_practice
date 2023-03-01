@@ -16,6 +16,6 @@ class User(Base):
     def check_password(self, passed_password):
         hashed_passed_password = hashlib.sha256((passed_password + PASSWORD_SALT).encode()).hexdigest().lower()
         if self.password == hashed_passed_password:
-            return self.money
+            return self
         else:
             raise HTTPException(status_code=400, detail="Wrong password")
