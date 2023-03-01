@@ -15,13 +15,20 @@ class UserCreate(UserBase):
         return password
 
 
+class UserMoney(UserBase):
+    money: int
+
+
 class User(UserBase):
     id: int
-    money: int
 
     class Config:
         orm_mode = True
 
 
-class UserCreated(User, UserCreate):
+class UserInfo(User, UserMoney):
+    pass
+
+
+class UserCreated(User, UserMoney, UserCreate):
     pass
