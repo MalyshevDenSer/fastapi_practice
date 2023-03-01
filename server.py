@@ -31,7 +31,10 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @app.post("/get_money", response_model=str)
 def get_user_money(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    return crud.sign_in(db, name=user.name, password=user.password)
+    money_amount = crud.sign_in(db, name=user.name, password=user.password)
+    if not money_amount:
+        raise HTTPException(status_code=400, detail='There is no such user')
+    return money_amount
 
 
 @app.get("/users/", response_model=List[schemas.User])

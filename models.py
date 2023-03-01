@@ -2,6 +2,8 @@ from sqlalchemy import Column, Integer, String
 import hashlib
 from settings import PASSWORD_SALT
 from database import Base
+from fastapi import HTTPException
+
 
 class User(Base):
     __tablename__ = "users"
@@ -16,5 +18,4 @@ class User(Base):
         if self.password == hashed_passed_password:
             return self.money
         else:
-            return 'Wrong password'
-
+            raise HTTPException(status_code=400, detail="Wrong password")

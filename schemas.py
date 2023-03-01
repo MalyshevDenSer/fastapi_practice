@@ -11,7 +11,6 @@ class UserCreate(UserBase):
     password: str
 
     def hash_password(self):
-        # password = self.password + '1'
         password = hashlib.sha256((self.password + PASSWORD_SALT).encode()).hexdigest().lower()
         return password
 
