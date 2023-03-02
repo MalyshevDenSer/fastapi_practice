@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Path
 from sqlalchemy.orm import Session
 
 import crud
@@ -40,7 +40,7 @@ def get_user_money(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @app.get("/users/{user_id}", response_model=schemas.User)
-def read_user(user_id: int, db: Session = Depends(get_db)):
+def read_user(user_id: int = Path(description='The ID of user which name you want', le=100), db: Session = Depends(get_db)):
     info = crud.get_user_by_id(db, user_id)
     if not info:
         raise HTTPException(status_code=400, detail="There is no user with such ID")
